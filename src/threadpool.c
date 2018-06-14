@@ -288,7 +288,7 @@ thread_pool_is_need_extend(void *arg)
             if(p->queue_size < 100)
             {
                 pthread_mutex_unlock(&pool->queue_lock);
-                return ;
+                return NULL;
             }
             
             for(i = 0; i < incr; i++)
@@ -317,7 +317,7 @@ thread_pool_is_need_extend(void *arg)
     
     //pthread_cond_signal(&pool->extend_ready);
 
-    return ;
+    return NULL;
 }
 
 static void *
@@ -380,7 +380,7 @@ thread_pool_is_need_recovery(void *arg)
         sleep(5);
     }
 
-    return ;
+    return NULL;
 }
 
 static void *

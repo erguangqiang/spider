@@ -207,7 +207,8 @@ create_local_socket()
     }
 
     pool = options.tpool;
-    
+
+    unlink(SPIDER_SOCKET_FILE);
     bzero(&svraddr, sizeof(struct sockaddr_un));
 
     svraddr.sun_family = AF_UNIX;
@@ -286,7 +287,10 @@ int
 SpiderMain(int argc, char * argv[])
 {
     int ret = 0;
-#if 0
+    int cworker = 0;
+    int status = 0;
+    pid_t pid = 0;
+#ifdef SPIDER_DEBUG
     ret = create_deamon();
     if(ret == -1)
     {
@@ -317,7 +321,27 @@ SpiderMain(int argc, char * argv[])
 
     for(;;)
     {
-        printf("for   loop!\n");
+        if(cworker >= SPIDER_WORKS)
+        {
+            waitpid(-1, &status, 0);
+            printf("one work exit, one worker restart...\n");
+        }
+
+        pid = fork();
+        if(pid < 0)
+        {
+            return -127;
+        }
+        else if(pid == 0)
+        {
+            break;
+        }
+        cworker++;
+    }
+
+    for(;;)
+    {
+        printf("i'm one worker proccess pid = %d\n", getpid());
         sleep(5);
     }
     

@@ -11,11 +11,14 @@
 #include <assert.h>
 #include <sys/select.h>
 #include <sys/time.h>
-
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #ifndef SpiderMain
 #define SpiderMain       main
 #endif
+
+#define SPIDER_DEBUG    (1)
 
 #ifndef SPIDER_NULL_FILE
 #define SPIDER_NULL_FILE "/dev/null"
@@ -34,6 +37,10 @@
 #define bool int
 #define true  1
 #define false 0
+#endif
+
+#ifndef SPIDER_WORKS
+#define SPIDER_WORKS   (4)
 #endif
 
 #ifndef SPIDER_THREAD_NUM
